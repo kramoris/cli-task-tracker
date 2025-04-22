@@ -1,22 +1,26 @@
 import json
+from datetime import datetime
 
 CATEGORIES = ["work", "personal", "errands", "study", "other"]
 
 class Task:
-    def __init__(self, title, completed=False, category="other"):
+    def __init__(self, title, completed=False, category="other", due_date=None):
         self.title = title
         self.completed = completed
         self.category = category
+        self.due_date = due_date  # format: "YYYY-MM-DD"
 
     def __str__(self):
         status = "[x]" if self.completed else "[ ]"
-        return f"{status} ({self.category}) {self.title}"
+        due = f" due {self.due_date}" if self.due_date else ""
+        return f"{status} ({self.category}) {self.title}{due}"
 
     def to_dict(self):
         return {
             "title": self.title,
             "completed": self.completed,
-            "category": self.category
+            "category": self.category,
+            "due_date": self.due_date
         }
 
     @staticmethod
@@ -24,7 +28,8 @@ class Task:
         return Task(
             data["title"],
             data["completed"],
-            data.get("category", "other")  # default if missing
+            data.get("category", "other"),
+            data.get("due_date")
         )
 
 tasks = []
@@ -62,6 +67,17 @@ def choose_category():
     print("Invalid choice. Defaulting to 'other'.")
     return "other"
 
+def ask_due_date():
+    date_input = input("Enter due date (YYYY-MM-DD) or leave blank: ").strip()
+    if date_input == "":
+        return None
+    try:
+        datetime.strptime(date_input, "%Y-%m-%d")  # just validate format
+        return date_input
+    except ValueError:
+        print("Invalid date format. Skipping due date.")
+        return None
+
 def main():
     global tasks
     tasks = load_tasks()
@@ -77,7 +93,8 @@ def main():
     if choice == "1":
         title = input("Enter a new task: ")
         category = choose_category()
-        task = Task(title, category=category)
+        due_date = ask_due_date()
+        task = Task(title, category=category, due_date=due_date)
         tasks.append(task)
         save_tasks()
         print("Task added.")

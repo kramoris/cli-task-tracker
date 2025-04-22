@@ -13,7 +13,7 @@ class Task:
     def __str__(self):
         status = "[x]" if self.completed else "[ ]"
         due = f" due {self.due_date}" if self.due_date else ""
-        return f"{status} ({self.category}) {self.title.strip().capitalize()}{due}"
+        return f"{status} ({self.category}) {self.title.capitalize()}{due}"
 
     def to_dict(self):
         return {
@@ -95,7 +95,7 @@ def main():
         choice = input("Choose an option (1-5): ")
 
         if choice == "1":
-            title = input("Enter a new task: ")
+            title = input("Enter a new task: ").strip().lower()
             category = choose_category()
             due_date = ask_due_date()
             task = Task(title, category=category, due_date=due_date)

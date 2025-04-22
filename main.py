@@ -82,87 +82,91 @@ def main():
     global tasks
     tasks = load_tasks()
 
-    list_tasks()
-
-    print("\nOptions:")
-    print("1. Add a task")
-    print("2. Mark a task as complete")
-    print("3. Edit or delete a task")
-    print("4. View tasks by category")
-
-    choice = input("Choose an option (1 or 2): ")
-
-    if choice == "1":
-        title = input("Enter a new task: ")
-        category = choose_category()
-        due_date = ask_due_date()
-        task = Task(title, category=category, due_date=due_date)
-        tasks.append(task)
-        save_tasks()
-        print("Task added.")
-    elif choice == "2":
-        if not tasks:
-            print("No tasks to mark.")
-            return
-        try:
-            index = int(input("Enter the number of the task to mark as complete: ")) - 1
-            if 0 <= index < len(tasks):
-                tasks[index].completed = True
-                save_tasks()
-                print("Task marked as complete.")
-            else:
-                print("Invalid task number.")
-        except ValueError:
-            print("Please enter a valid number.")
-    elif choice == "3":
-        if not tasks:
-            print("No tasks to edit or delete.")
-            return
+    while True:
         list_tasks()
-        try:
-            index = int(input("Enter the task number to edit or delete: ")) - 1
-            if 0 <= index < len(tasks):
-                print("\nWhat would you like to do?")
-                print("1. Edit task")
-                print("2. Delete task")
-                sub_choice = input("Choose 1 or 2: ")
-                if sub_choice == "1":
-                    new_title = input("Enter new title (or leave blank to keep current): ")
-                    new_category = choose_category()
-                    new_due = ask_due_date()
 
-                    if new_title:
-                        tasks[index].title = new_title
-                    tasks[index].category = new_category
-                    tasks[index].due_date = new_due
+        print("\nOptions:")
+        print("1. Add a task")
+        print("2. Mark a task as complete")
+        print("3. Edit or delete a task")
+        print("4. View tasks by category")
+        print("5. Exit")
 
+        choice = input("Choose an option (1-5): ")
+
+        if choice == "1":
+            title = input("Enter a new task: ")
+            category = choose_category()
+            due_date = ask_due_date()
+            task = Task(title, category=category, due_date=due_date)
+            tasks.append(task)
+            save_tasks()
+            print("Task added.")
+        elif choice == "2":
+            if not tasks:
+                print("No tasks to mark.")
+                continue
+            try:
+                index = int(input("Enter the number of the task to mark as complete: ")) - 1
+                if 0 <= index < len(tasks):
+                    tasks[index].completed = True
                     save_tasks()
-                    print("Task updated.")
-                elif sub_choice == "2":
-                    del tasks[index]
-                    save_tasks()
-                    print("Task deleted.")
+                    print("Task marked as complete.")
                 else:
-                    print("Invalid choice.")
+                    print("Invalid task number.")
+            except ValueError:
+                print("Please enter a valid number.")
+        elif choice == "3":
+            if not tasks:
+                print("No tasks to edit or delete.")
+                continue
+            list_tasks()
+            try:
+                index = int(input("Enter the task number to edit or delete: ")) - 1
+                if 0 <= index < len(tasks):
+                    print("\nWhat would you like to do?")
+                    print("1. Edit task")
+                    print("2. Delete task")
+                    sub_choice = input("Choose 1 or 2: ")
+                    if sub_choice == "1":
+                        new_title = input("Enter new title (or leave blank to keep current): ")
+                        new_category = choose_category()
+                        new_due = ask_due_date()
+
+                        if new_title:
+                            tasks[index].title = new_title
+                        tasks[index].category = new_category
+                        tasks[index].due_date = new_due
+
+                        save_tasks()
+                        print("Task updated.")
+                    elif sub_choice == "2":
+                        del tasks[index]
+                        save_tasks()
+                        print("Task deleted.")
+                    else:
+                        print("Invalid choice.")
+                else:
+                    print("Invalid task number.")
+            except ValueError:
+                print("Please enter a valid number.")
+        elif choice == "4":
+            selected = choose_category()
+            filtered = [task for task in tasks if task.category == selected]
+            if not filtered:
+                print(f"No tasks in category '{selected}'.")
             else:
-                print("Invalid task number.")
-        except ValueError:
-            print("Please enter a valid number.")
-    elif choice == "4":
-        selected = choose_category()
-        filtered = [task for task in tasks if task.category == selected]
-        if not filtered:
-            print(f"No tasks in category '{selected}'.")
+                print(f"\nTasks in category '{selected}':")
+                for i, task in enumerate(filtered):
+                    print(f"{i + 1}. {task}")
+        elif choice == "5":
+            print("Goodbye!")
+            break
         else:
-            print(f"\nTasks in category '{selected}':")
-            for i, task in enumerate(filtered):
-                print(f"{i + 1}. {task}")
+            print("Invalid option.")
 
-    else:
-        print("Invalid option.")
+        print()
 
-    print()
-    list_tasks()
 
 if __name__ == "__main__":
     main()

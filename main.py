@@ -10,10 +10,11 @@ class Task:
 tasks = []
 
 def main():
-    task = Task("Finish building CLI Task Tracker")
+    title = input("Enter a new task: ")
+    task = Task(title)
     tasks.append(task)
 
-    print("Tasks:")
+    print("\nTasks:")
     for t in tasks:
         print(t)
 

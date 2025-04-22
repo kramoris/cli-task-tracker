@@ -1,20 +1,31 @@
 import json
 
+CATEGORIES = ["work", "personal", "errands", "study", "other"]
+
 class Task:
-    def __init__(self, title, completed=False):
+    def __init__(self, title, completed=False, category="other"):
         self.title = title
         self.completed = completed
+        self.category = category
 
     def __str__(self):
         status = "[x]" if self.completed else "[ ]"
-        return f"{status} {self.title}"
+        return f"{status} ({self.category}) {self.title}"
 
     def to_dict(self):
-        return {"title": self.title, "completed": self.completed}
+        return {
+            "title": self.title,
+            "completed": self.completed,
+            "category": self.category
+        }
 
     @staticmethod
     def from_dict(data):
-        return Task(data["title"], data["completed"])
+        return Task(
+            data["title"],
+            data["completed"],
+            data.get("category", "other")  # default if missing
+        )
 
 tasks = []
 
@@ -38,6 +49,19 @@ def list_tasks():
     for i, task in enumerate(tasks):
         print(f"{i + 1}. {task}")
 
+def choose_category():
+    print("\nChoose a category:")
+    for i, cat in enumerate(CATEGORIES):
+        print(f"{i + 1}. {cat}")
+    try:
+        choice = int(input("Enter the number: "))
+        if 1 <= choice <= len(CATEGORIES):
+            return CATEGORIES[choice - 1]
+    except ValueError:
+        pass
+    print("Invalid choice. Defaulting to 'other'.")
+    return "other"
+
 def main():
     global tasks
     tasks = load_tasks()
@@ -52,7 +76,8 @@ def main():
 
     if choice == "1":
         title = input("Enter a new task: ")
-        task = Task(title)
+        category = choose_category()
+        task = Task(title, category=category)
         tasks.append(task)
         save_tasks()
         print("Task added.")

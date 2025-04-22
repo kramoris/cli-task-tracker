@@ -87,6 +87,7 @@ def main():
     print("\nOptions:")
     print("1. Add a task")
     print("2. Mark a task as complete")
+    print("3. Edit or delete a task")
 
     choice = input("Choose an option (1 or 2): ")
 
@@ -108,6 +109,40 @@ def main():
                 tasks[index].completed = True
                 save_tasks()
                 print("Task marked as complete.")
+            else:
+                print("Invalid task number.")
+        except ValueError:
+            print("Please enter a valid number.")
+    elif choice == "3":
+        if not tasks:
+            print("No tasks to edit or delete.")
+            return
+        list_tasks()
+        try:
+            index = int(input("Enter the task number to edit or delete: ")) - 1
+            if 0 <= index < len(tasks):
+                print("\nWhat would you like to do?")
+                print("1. Edit task")
+                print("2. Delete task")
+                sub_choice = input("Choose 1 or 2: ")
+                if sub_choice == "1":
+                    new_title = input("Enter new title (or leave blank to keep current): ")
+                    new_category = choose_category()
+                    new_due = ask_due_date()
+
+                    if new_title:
+                        tasks[index].title = new_title
+                    tasks[index].category = new_category
+                    tasks[index].due_date = new_due
+
+                    save_tasks()
+                    print("Task updated.")
+                elif sub_choice == "2":
+                    del tasks[index]
+                    save_tasks()
+                    print("Task deleted.")
+                else:
+                    print("Invalid choice.")
             else:
                 print("Invalid task number.")
         except ValueError:

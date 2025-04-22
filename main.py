@@ -88,6 +88,7 @@ def main():
     print("1. Add a task")
     print("2. Mark a task as complete")
     print("3. Edit or delete a task")
+    print("4. View tasks by category")
 
     choice = input("Choose an option (1 or 2): ")
 
@@ -147,6 +148,16 @@ def main():
                 print("Invalid task number.")
         except ValueError:
             print("Please enter a valid number.")
+    elif choice == "4":
+        selected = choose_category()
+        filtered = [task for task in tasks if task.category == selected]
+        if not filtered:
+            print(f"No tasks in category '{selected}'.")
+        else:
+            print(f"\nTasks in category '{selected}':")
+            for i, task in enumerate(filtered):
+                print(f"{i + 1}. {task}")
+
     else:
         print("Invalid option.")
 

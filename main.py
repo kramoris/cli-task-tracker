@@ -13,7 +13,7 @@ class Task:
     def __str__(self):
         status = "[x]" if self.completed else "[ ]"
         due = f" due {self.due_date}" if self.due_date else ""
-        return f"{status} ({self.category}) {self.title}{due}"
+        return f"{status} ({self.category}) {self.title.strip().capitalize()}{due}"
 
     def to_dict(self):
         return {

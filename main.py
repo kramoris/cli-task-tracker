@@ -90,7 +90,8 @@ def main():
         print("2. Mark a task as complete")
         print("3. Edit or delete a task")
         print("4. View tasks by category")
-        print("5. Exit")
+        print("5. View tasks due before a date")
+        print("6. Exit")
 
         choice = input("Choose an option (1-5): ")
 
@@ -160,8 +161,32 @@ def main():
                 for i, task in enumerate(filtered):
                     print(f"{i + 1}. {task}")
         elif choice == "5":
+            date_input = input("Enter the cutoff date (YYYY-MM-DD): ").strip()
+            try:
+                cutoff = datetime.strptime(date_input, "%Y-%m-%d")
+                filtered = []
+                for task in tasks:
+                    if task.due_date:
+                        try:
+                            task_date = datetime.strptime(task.due_date, "%Y-%m-%d")
+                            if task_date < cutoff:
+                                filtered.append(task)
+                        except ValueError:
+                            pass
+                if not filtered:
+                    print(f"No tasks due before {date_input}.")
+                else:
+                    print(f"\nTasks due before {date_input}:")
+                    for i, task in enumerate(filtered):
+                        print(f"{i + 1}. {task}")
+            except ValueError:
+                print("Invalid date format.")
+
+        elif choice == "6":
             print("Goodbye!")
             break
+
+
         else:
             print("Invalid option.")
 

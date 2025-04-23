@@ -1,31 +1,32 @@
 # CLI Task Tracker
 
-A simple Python command-line to-do app.
+A basic Python to-do app that runs in the terminal.
 
-## Features
+## What it can do
 
-- Add tasks with title, category, and due date
-- Mark tasks as complete
-- Edit or delete existing tasks
-- View tasks by category
-- Save tasks to a local JSON file (`tasks.json`)
-- Runs in a loop until you choose to exit
+- Add tasks (with title, category, and due date)
+- See all tasks
+- Mark tasks as done
+- Edit or delete tasks
+- Filter by category
+- Show tasks due before a date
+- Saves tasks to a file (tasks.json)
 
 ## Categories
 
-You can choose from these predefined categories when adding or editing a task:
+You can pick from:
 - work
 - personal
 - errands
 - study
 - other
 
-## How to Run
+## How to use it
 
-1. Open a terminal or command prompt
-2. Navigate to the folder where this project is saved
-3. Run the app with:
+1. Open a terminal  
+2. Go to the folder where this project is  
+3. Run it like this:
 
-    python main.py
+   `python main.py`
 
-Make sure you have Python installed and added to your system’s PATH.
+The app will keep running until you choose to exit.

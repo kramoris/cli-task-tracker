@@ -3,6 +3,7 @@ from datetime import datetime
 
 CATEGORIES = ["work", "personal", "errands", "study", "other"]
 
+
 class Task:
     def __init__(self, title, completed=False, category="other", due_date=None):
         self.title = title
@@ -32,7 +33,9 @@ class Task:
             data.get("due_date")
         )
 
+
 tasks = []
+
 
 def load_tasks():
     try:
@@ -42,9 +45,11 @@ def load_tasks():
     except FileNotFoundError:
         return []
 
+
 def save_tasks():
     with open("tasks.json", "w") as f:
         json.dump([task.to_dict() for task in tasks], f, indent=2)
+
 
 def list_tasks():
     if not tasks:
@@ -53,6 +58,7 @@ def list_tasks():
     print("\nTasks:")
     for i, task in enumerate(tasks):
         print(f"{i + 1}. {task}")
+
 
 def choose_category():
     print("\nChoose a category:")
@@ -67,6 +73,7 @@ def choose_category():
     print("Invalid choice. Defaulting to 'other'.")
     return "other"
 
+
 def ask_due_date():
     date_input = input("Enter due date (YYYY-MM-DD) or leave blank: ").strip()
     if date_input == "":
@@ -77,6 +84,7 @@ def ask_due_date():
     except ValueError:
         print("Invalid date format. Skipping due date.")
         return None
+
 
 def main():
     global tasks
@@ -91,7 +99,8 @@ def main():
         print("3. Edit or delete a task")
         print("4. View tasks by category")
         print("5. View tasks due before a date")
-        print("6. Exit")
+        print("6. Delete all completed tasks")
+        print("7. Exit")
 
         choice = input("Choose an option (1-5): ")
 
@@ -103,6 +112,7 @@ def main():
             tasks.append(task)
             save_tasks()
             print("Task added.")
+
         elif choice == "2":
             if not tasks:
                 print("No tasks to mark.")
@@ -117,6 +127,7 @@ def main():
                     print("Invalid task number.")
             except ValueError:
                 print("Please enter a valid number.")
+
         elif choice == "3":
             if not tasks:
                 print("No tasks to edit or delete.")
@@ -151,6 +162,7 @@ def main():
                     print("Invalid task number.")
             except ValueError:
                 print("Please enter a valid number.")
+
         elif choice == "4":
             selected = choose_category()
             filtered = [task for task in tasks if task.category == selected]
@@ -160,6 +172,7 @@ def main():
                 print(f"\nTasks in category '{selected}':")
                 for i, task in enumerate(filtered):
                     print(f"{i + 1}. {task}")
+
         elif choice == "5":
             date_input = input("Enter the cutoff date (YYYY-MM-DD): ").strip()
             try:
@@ -183,6 +196,11 @@ def main():
                 print("Invalid date format.")
 
         elif choice == "6":
+            tasks = [task for task in tasks if not task.completed]
+            save_tasks()
+            print("All completed tasks have been deleted.")
+
+        elif choice == "7":
             print("Goodbye!")
             break
 

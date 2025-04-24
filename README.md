@@ -10,6 +10,7 @@ A basic Python to-do app that runs in the terminal.
 - Edit or delete tasks
 - Filter by category
 - Show tasks due before a date
+- Delete all completed tasks
 - Saves tasks to a file (tasks.json)
 
 ## Categories
@@ -25,8 +26,8 @@ You can pick from:
 
 1. Open a terminal  
 2. Go to the folder where this project is  
-3. Run it like this:
+3. Run this:
 
    `python main.py`
 
-The app will keep running until you choose to exit.
+The app keeps running until you choose to exit.

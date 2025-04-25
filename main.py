@@ -83,20 +83,22 @@ def main():
     tasks = load_tasks()
 
     while True:
-        list_tasks()
-
         print("\nOptions:")
-        print("1. Add a task")
-        print("2. Mark a task as complete")
-        print("3. Edit or delete a task")
-        print("4. View tasks by category")
-        print("5. View tasks due before a date")
-        print("6. Delete all completed tasks")
-        print("7. Exit")
+        print("1. Show all tasks")
+        print("2. Add a task")
+        print("3. Mark a task as complete")
+        print("4. Edit or delete a task")
+        print("5. View tasks by category")
+        print("6. View tasks due before a date")
+        print("7. Delete all completed tasks")
+        print("8. Exit")
 
         choice = input("Choose an option (1-7): ")
 
         if choice == "1":
+            list_tasks()
+
+        elif choice == "2":
             title = input("Enter a new task: ").strip().lower()
             category = choose_category()
             due_date = ask_due_date()
@@ -105,7 +107,7 @@ def main():
             save_tasks()
             print("Task added.")
 
-        elif choice == "2":
+        elif choice == "3":
             if not tasks:
                 print("No tasks to mark.")
                 continue
@@ -120,7 +122,7 @@ def main():
             except ValueError:
                 print("Please enter a valid number.")
 
-        elif choice == "3":
+        elif choice == "4":
             if not tasks:
                 print("No tasks to edit or delete.")
                 continue
@@ -153,7 +155,7 @@ def main():
             except ValueError:
                 print("Please enter a valid number.")
 
-        elif choice == "4":
+        elif choice == "5":
             selected = choose_category()
             filtered = [task for task in tasks if task.category == selected]
             if not filtered:
@@ -163,7 +165,7 @@ def main():
                 for i, task in enumerate(filtered):
                     print(f"{i + 1}. {task}")
 
-        elif choice == "5":
+        elif choice == "6":
             date_input = input("Enter the cutoff date (YYYY-MM-DD): ").strip()
             try:
                 cutoff = datetime.strptime(date_input, "%Y-%m-%d")
@@ -185,12 +187,12 @@ def main():
             except ValueError:
                 print("Invalid date format.")
 
-        elif choice == "6":
+        elif choice == "7":
             tasks = [task for task in tasks if not task.completed]
             save_tasks()
             print("All completed tasks have been deleted.")
 
-        elif choice == "7":
+        elif choice == "8":
             print("Goodbye!")
             break
 

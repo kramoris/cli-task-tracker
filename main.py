@@ -3,7 +3,6 @@ from datetime import datetime
 
 CATEGORIES = ["work", "personal", "errands", "study", "other"]
 
-
 class Task:
     def __init__(self, title, completed=False, category="other", due_date=None):
         self.title = title
@@ -14,7 +13,7 @@ class Task:
     def __str__(self):
         status = "[x]" if self.completed else "[ ]"
         due = f" due {self.due_date}" if self.due_date else ""
-        return f"{status} ({self.category}) {self.title.capitalize()}{due}"
+        return f"{status} ({self.category}) {self.title.strip().capitalize()}{due}"
 
     def to_dict(self):
         return {
@@ -33,9 +32,7 @@ class Task:
             data.get("due_date")
         )
 
-
 tasks = []
-
 
 def load_tasks():
     try:
@@ -45,11 +42,9 @@ def load_tasks():
     except FileNotFoundError:
         return []
 
-
 def save_tasks():
     with open("tasks.json", "w") as f:
         json.dump([task.to_dict() for task in tasks], f, indent=2)
-
 
 def list_tasks():
     if not tasks:
@@ -58,7 +53,6 @@ def list_tasks():
     print("\nTasks:")
     for i, task in enumerate(tasks):
         print(f"{i + 1}. {task}")
-
 
 def choose_category():
     print("\nChoose a category:")
@@ -73,18 +67,16 @@ def choose_category():
     print("Invalid choice. Defaulting to 'other'.")
     return "other"
 
-
 def ask_due_date():
     date_input = input("Enter due date (YYYY-MM-DD) or leave blank: ").strip()
     if date_input == "":
         return None
     try:
-        datetime.strptime(date_input, "%Y-%m-%d")  # just validate format
+        datetime.strptime(date_input, "%Y-%m-%d")
         return date_input
     except ValueError:
         print("Invalid date format. Skipping due date.")
         return None
-
 
 def main():
     global tasks
@@ -102,7 +94,7 @@ def main():
         print("6. Delete all completed tasks")
         print("7. Exit")
 
-        choice = input("Choose an option (1-5): ")
+        choice = input("Choose an option (1-7): ")
 
         if choice == "1":
             title = input("Enter a new task: ").strip().lower()
@@ -141,15 +133,13 @@ def main():
                     print("2. Delete task")
                     sub_choice = input("Choose 1 or 2: ")
                     if sub_choice == "1":
-                        new_title = input("Enter new title (or leave blank to keep current): ")
+                        new_title = input("Enter new title (or leave blank to keep current): ").strip()
                         new_category = choose_category()
                         new_due = ask_due_date()
-
                         if new_title:
                             tasks[index].title = new_title
                         tasks[index].category = new_category
                         tasks[index].due_date = new_due
-
                         save_tasks()
                         print("Task updated.")
                     elif sub_choice == "2":
@@ -204,12 +194,10 @@ def main():
             print("Goodbye!")
             break
 
-
         else:
             print("Invalid option.")
 
         print()
-
 
 if __name__ == "__main__":
     main()
